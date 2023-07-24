@@ -1,5 +1,4 @@
 import pandas as pd
-import os
 
 def extract_info(match):
     """
@@ -51,7 +50,7 @@ def create_excel_file(data_dict, excel_filename):
 
         # Combine the bookmakers' names with the DataFrame
         match_df.insert(0, 'Bookmaker', match_df.index)
-        
+
         # Write the DataFrame to the Excel sheet
         match_df.to_excel(writer, sheet_name=sheet_name, index=False)
 
