@@ -59,7 +59,37 @@ def find_arbitrage_opportunities(match, match_name):
 
         return arbitrage_df
     else:
-        print(f"No opportunities found for {match_name}")
         return arbitrage_df
+
+def find_arbitrage_profit(investment, match, team1name, team2name):
+    """
+    Inputs: 
+        investment : Total bet amount in £
+        match : A pandas dataframe for a single match
+        team1name : The name of team 1
+        team2name : The name of team 2
+    """
+
+    x = (100 - match['Profit (%)'].iloc[0]) / 100 # If our edge is 1% then our arbitrage % is 99%
+    
+    profit = (investment / x) - investment
+
+    individual_arbitrage_1 = 1 / match['Team 1 win odds'].iloc[0]
+    individual_bet_1 = (investment * individual_arbitrage_1) / x 
+
+    individual_arbitrage_2 = 1 / match['Team 2 win odds'].iloc[0]
+    individual_bet_2 = (investment * individual_arbitrage_2) / x 
+
+    individual_arbitrage_3 = 1 / match['Draw odds'].iloc[0]
+    individual_bet_3 = (investment * individual_arbitrage_3) / x 
+
+    message = f"""If your investment is £{investment}, you would make £{profit}. 
+               You must bet £{individual_bet_1} on {team1name}, £{individual_bet_2} 
+               on {team2name}, and £{individual_bet_3} on Draw"""
+    
+    return message
+
+
+
 
 
