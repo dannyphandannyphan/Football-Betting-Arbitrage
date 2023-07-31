@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 def extract_info(match):
     """
@@ -32,8 +33,8 @@ def create_pandas_dataframe(json_data):
     
         if match_name not in match_tables:
             match_tables[match_name] = pd.DataFrame(match_data)
-        else:
-            match_tables[match_name] = pd.concat([match_tables[match_name], pd.DataFrame(match_data)])
+        else:  
+            match_tables[match_name] = pd.concat([match_tables[match_name], pd.DataFrame(match_data)]) # If the match already exists, concatenate
 
     return match_tables
 
@@ -46,12 +47,14 @@ def create_excel_file(data_dict, excel_filename):
 
     for match_name, match_df in data_dict.items():
         
-        sheet_name = match_name[:31]
-
-        # Combine the bookmakers' names with the DataFrame
-        match_df.insert(0, 'Bookmaker', match_df.index)
+        sheet_name = match_name[:31] # Excel only allows names within 31 characters
 
         # Write the DataFrame to the Excel sheet
         match_df.to_excel(writer, sheet_name=sheet_name, index=False)
 
+    file_path = os.path.abspath(excel_filename)
+
     writer.close()
+
+    
+    return file_path
